@@ -24,7 +24,7 @@ fn read(pin_num: u64) -> sysfs_gpio::Result<()> {
 
         try!(pin.set_direction(Direction::In));
         for i in 1..512 {
-            let val = try!(pin.get_value());
+            let val = pin.get_value();
             bits[i] = val;
         }
         println!("{:?}", bits);
