@@ -5,17 +5,13 @@ use std::thread::sleep;
 use std::time::Duration;
 
 fn main() {
-    match read(14) {
-        Ok(()) => println!("ok"),
-        Err(err) => println!("Error: {}", err),
-    }
+    read(14);
 }
 
-fn read(pin_num: u64) -> sysfs_gpio::Result<()> {
+fn read(pin_num: u64) {
     let pin = Pin::new(pin_num);
 
     pin.with_exported(|| {
-        let mut prev_val: u8 = 255;
         loop {
             pin.set_value(0).unwrap();
             sleep(Duration::from_millis(30));
@@ -36,5 +32,5 @@ fn read(pin_num: u64) -> sysfs_gpio::Result<()> {
             }
             sleep(Duration::from_millis(1000));
         }
-    })
+    });
 }
