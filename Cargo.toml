@@ -5,6 +5,7 @@ authors = ["Justin Duplessis <jdupl@linux.com>"]
 
 [dependencies]
 sysfs_gpio = "0.4"
+time = "0.1"
 
 [[bin]]
 path = "src/main.rs"
