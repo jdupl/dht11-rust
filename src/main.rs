@@ -22,17 +22,18 @@ fn read(pin_num: u64) -> sysfs_gpio::Result<()> {
 
         pin.set_value(1).unwrap();
         let t2 = time::now();
-        sleep(Duration::new(0, 30 * 1000)); // Sleep 30us
+        sleep(Duration::new(0, 1));
         let t3 = time::now();
 
         try!(pin.set_direction(Direction::In));
         let t4 = time::now();
-        for _ in 1..101 {
-            let t5 = time::now();
+        let mut last = 1;
+        for _ in 1..512 {
             let val = try!(pin.get_value());
-            let t6 = time::now();
-            println!("{:?} took {}", val, t6 - t5);
-            sleep(Duration::new(0, 10 * 1000)); // Sleep 10us
+            if val != last {
+                last = val;
+                println!("{}", val);
+            }
         }
         println!("{} {} {}", t2 - t1, t3 - t2, t4 - t3);
         Ok(())
