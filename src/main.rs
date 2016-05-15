@@ -26,11 +26,12 @@ fn read(pin_num: u64) -> sysfs_gpio::Result<()> {
 
         let t3 = time::now();
         try!(pin.set_direction(Direction::In));
-
         let t4 = time::now();
         for _ in 1..101 {
+            let t5 = time::now();
             let val = try!(pin.get_value());
-            println!("{:?}", val);
+            let t6 = time::now();
+            println!("{:?} took {}", val, t6 - t5);
         }
         println!("{} {} {}", t2 - t1, t3 - t2, t4 - t3);
         Ok(())
