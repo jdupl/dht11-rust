@@ -15,7 +15,7 @@ pub fn main() {
 fn read(pin_num: u64) -> sysfs_gpio::Result<()> {
     let pin = Pin::new(pin_num);
     pin.with_exported(|| {
-        let mut bits = vec![0];
+        let mut bits = vec![0; 512];
         try!(pin.set_direction(Direction::Low));
         pin.set_value(0).unwrap();
         sleep(Duration::new(0, 20 * 1000000)); // Sleep 30ms
@@ -24,9 +24,9 @@ fn read(pin_num: u64) -> sysfs_gpio::Result<()> {
         sleep(Duration::new(0, 1));
 
         try!(pin.set_direction(Direction::In));
-        for _ in 1..512 {
+        for i in 1..512 {
             let val = try!(pin.get_value());
-            bits.push(val);
+            bits[i] = val;
         }
         println!("{:?}", bits);
         Ok(())
