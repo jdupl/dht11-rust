@@ -60,7 +60,7 @@ fn read(pin_num: u64) -> sysfs_gpio::Result<()> {
                          });
                 prev_val = val;
             }
-            sleep(Duration::from_millis(10));
+            // sleep(Duration::from_millis(10));
         }
     }).unwrap();
     Ok(())
