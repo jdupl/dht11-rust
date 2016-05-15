@@ -16,12 +16,12 @@ fn read(pin_num: u64) -> sysfs_gpio::Result<()> {
     let pin = Pin::new(pin_num);
     pin.with_exported(|| {
         try!(pin.set_direction(Direction::Low));
-        pin.set_value(1).unwrap();
+        pin.set_value(0).unwrap();
         let t1 = time::now();
         sleep(Duration::new(0, 30 * 1000000)); // Sleep 30ms
 
         let t2 = time::now();
-        pin.set_value(0).unwrap();
+        pin.set_value(1).unwrap();
         sleep(Duration::new(0, 30 * 1000)); // Sleep 30us
 
         let t3 = time::now();
