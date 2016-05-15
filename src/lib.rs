@@ -10,13 +10,14 @@ pub fn main() {
 
 fn read(pin_num: u64) {
     let pin = Pin::new(pin_num);
+    pin.with_exported(|| {
+        pin.set_value(0).unwrap();
+        sleep(Duration::from_millis(30)); // Sleep 30ms
+        pin.set_value(1).unwrap();
+        sleep(Duration::new(0, 30)); // Sleep 30us
+    }).unwrap();
 
     pin.with_exported(|| {
-        try!(pin.set_direction(Direction::Out));
-        pin.set_value(0).unwrap();
-        sleep(Duration::from_millis(30));
-        pin.set_value(1).unwrap();
-        sleep(Duration::from_millis(20 / 1000));
         try!(pin.set_direction(Direction::In));
 
         let mut i = 0;
@@ -31,5 +32,5 @@ fn read(pin_num: u64) {
             i += 1;
         }
         Ok(())
-    });
+    }).unwrap();
 }
