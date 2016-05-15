@@ -38,6 +38,7 @@ fn read(pin_num: u64) -> sysfs_gpio::Result<()> {
     // }).unwrap();
     let pin = Pin::new(pin_num);
     pin.with_exported(|| {
+        try!(pin.set_direction(Direction::Low));
         pin.set_value(0).unwrap();
         sleep(Duration::from_millis(30)); // Sleep 30ms
         pin.set_value(1).unwrap();
