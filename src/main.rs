@@ -36,12 +36,20 @@ fn read(pin_num: u64) -> sysfs_gpio::Result<()> {
     //     }
     //     Ok(())
     // }).unwrap();
-    let input = Pin::new(pin_num);
-    input.with_exported(|| {
-        try!(input.set_direction(Direction::In));
+    let pin = Pin::new(pin_num);
+    pin.with_exported(|| {
+        pin.set_value(0).unwrap();
+        sleep(Duration::from_millis(30)); // Sleep 30ms
+        pin.set_value(1).unwrap();
+        sleep(Duration::new(0, 30)); // Sleep 30us
+        Ok(())
+    }).unwrap();
+
+    pin.with_exported(|| {
+        try!(pin.set_direction(Direction::In));
         let mut prev_val: u8 = 255;
         loop {
-            let val = try!(input.get_value());
+            let val = try!(pin.get_value());
             if val != prev_val {
                 println!("Pin State: {}",
                          if val == 0 {
